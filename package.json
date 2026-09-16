@@ -5,13 +5,13 @@
   "type": "module",
   "scripts": {
     "dev": "node ./node_modules/tsx/dist/cli.mjs server.ts",
-    "build": "node ./node_modules/vite/bin/vite.js build",
+    "build": "node ./node_modules/vite/bin/vite.js build && node ./node_modules/esbuild/bin/esbuild server.ts --bundle --platform=node --format=esm --packages=external --sourcemap --outfile=dist/server.js",
     "build:client": "node ./node_modules/vite/bin/vite.js build",
     "cap:sync": "node ./node_modules/@capacitor/cli/bin/capacitor sync",
     "cap:copy": "node ./node_modules/@capacitor/cli/bin/capacitor copy",
     "cap:add:ios": "node ./node_modules/@capacitor/cli/bin/capacitor add ios",
     "build:ios": "node ./node_modules/vite/bin/vite.js build && node ./node_modules/@capacitor/cli/bin/capacitor sync ios",
-    "start": "node ./node_modules/tsx/dist/cli.mjs server.ts",
+    "start": "node dist/server.js",
     "preview": "node ./node_modules/vite/bin/vite.js preview",
     "clean": "rm -rf dist server.js",
     "lint": "node ./node_modules/typescript/bin/tsc --noEmit"
@@ -29,6 +29,7 @@
     "dotenv": "^17.2.3",
     "drizzle-kit": "^0.31.10",
     "drizzle-orm": "^0.45.2",
+    "esbuild": "^0.25.0",
     "exceljs": "^4.4.0",
     "express": "^4.21.2",
     "file-saver": "^2.0.5",
@@ -53,7 +54,6 @@
   "devDependencies": {
     "@capacitor/cli": "^7.0.1",
     "autoprefixer": "^10.4.21",
-    "esbuild": "^0.25.0",
     "tailwindcss": "^4.1.14"
   }
 }

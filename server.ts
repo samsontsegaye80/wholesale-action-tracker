@@ -3,7 +3,6 @@ import path from 'path';
 import fs from 'fs';
 import os from 'os';
 import { GoogleGenAI } from '@google/genai';
-import { createServer as createViteServer } from 'vite';
 import { getAllTasks, upsertTask, bulkUpsertTasks, deleteTask, resetAllTasks } from './src/db/tasks.ts';
 import { getAllReminders, addReminder } from './src/db/reminders.ts';
 import { getOrCreateUser, getUsers } from './src/db/users.ts';
@@ -454,18 +453,19 @@ Return a STRICT JSON response (no code block wrappers, valid JSON only) with thi
     }
   });
 
-  // Production static dist serving with Vite on-the-fly fallback
+  // Production static dist serving with dynamic Vite fallback
   const distPath = path.join(process.cwd(), 'dist');
   const hasDist = fs.existsSync(path.join(distPath, 'index.html'));
 
   if (hasDist) {
-    console.log('[Server] Serving pre-built static client from ./dist');
+    console.log('[Server] Serving pre-built static client from ./dist (Ultra-low RAM mode)');
     app.use(express.static(distPath));
     app.get('*', (req, res) => {
       res.sendFile(path.join(distPath, 'index.html'));
     });
   } else {
-    console.log('[Server] Initializing Vite middleware mode for dynamic SSR/SPA serving');
+    console.log('[Server] Dist not found, loading Vite development server on-the-fly...');
+    const { createServer: createViteServer } = await import('vite');
     const vite = await createViteServer({
       server: { middlewareMode: true, allowedHosts: true },
       appType: 'spa',
