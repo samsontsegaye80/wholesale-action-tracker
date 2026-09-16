@@ -27,7 +27,8 @@ import {
   Download,
   Users,
   UserCheck,
-  UserPlus
+  UserPlus,
+  Plus
 } from 'lucide-react';
 import { TaskItem, TaskStatus } from '../types';
 import { getTaskDeadlineStatus, compareFinishDates, formatDateToDisplay } from '../utils/dateUtils';
