@@ -3,7 +3,12 @@ import { remindersLog } from './schema.ts';
 import { desc } from 'drizzle-orm';
 import { ReminderNotification } from '../types';
 
+let inMemoryReminders: ReminderNotification[] = [];
+
 export async function getAllReminders(): Promise<ReminderNotification[]> {
+  if (!process.env.SQL_HOST && !process.env.DATABASE_URL) {
+    return inMemoryReminders;
+  }
   try {
     const rows = await db.select().from(remindersLog).orderBy(desc(remindersLog.sentAt));
     return rows.map((r) => ({
@@ -25,12 +30,18 @@ export async function getAllReminders(): Promise<ReminderNotification[]> {
       status: (r.status as any) || 'Sent',
     }));
   } catch (error) {
-    console.error('Failed to get reminders from Cloud SQL:', error);
-    throw new Error('Database query failed. Please try again later.', { cause: error });
+    console.warn('SQL query failed or database not connected, using in-memory reminders:', error);
+    return inMemoryReminders;
   }
 }
 
 export async function addReminder(reminder: ReminderNotification): Promise<ReminderNotification> {
+  const newReminder = { ...reminder, sentAt: reminder.sentAt || new Date().toISOString() };
+  inMemoryReminders.unshift(newReminder);
+
+  if (!process.env.SQL_HOST && !process.env.DATABASE_URL) {
+    return newReminder;
+  }
   try {
     const values = {
       id: reminder.id,

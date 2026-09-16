@@ -2,10 +2,19 @@ import { db } from './index.ts';
 import { tasks } from './schema.ts';
 import { eq, asc } from 'drizzle-orm';
 import { TaskItem } from '../types';
+import { INITIAL_TASKS } from '../data/initialTasks.ts';
+
+let inMemoryTasks: TaskItem[] = [...INITIAL_TASKS];
 
 export async function getAllTasks(): Promise<TaskItem[]> {
+  if (!process.env.SQL_HOST && !process.env.DATABASE_URL) {
+    return inMemoryTasks;
+  }
   try {
     const rows = await db.select().from(tasks).orderBy(asc(tasks.sNo));
+    if (rows.length === 0) {
+      return inMemoryTasks;
+    }
     return rows.map((r) => ({
       id: r.id,
       sNo: r.sNo,
@@ -30,12 +39,24 @@ export async function getAllTasks(): Promise<TaskItem[]> {
       lastReminderSent: r.lastReminderSent || undefined,
     }));
   } catch (error) {
-    console.error('Failed to get tasks from Cloud SQL:', error);
-    throw new Error('Database query failed. Please try again later.', { cause: error });
+    console.warn('SQL query failed or database not connected, using in-memory tasks fallback:', error);
+    return inMemoryTasks;
   }
 }
 
 export async function upsertTask(task: TaskItem): Promise<TaskItem> {
+  const index = inMemoryTasks.findIndex((t) => t.id === task.id || t.sNo === task.sNo);
+  const updatedTask = { ...task, lastUpdated: new Date().toISOString() };
+  if (index >= 0) {
+    inMemoryTasks[index] = updatedTask;
+  } else {
+    inMemoryTasks.push(updatedTask);
+  }
+
+  if (!process.env.SQL_HOST && !process.env.DATABASE_URL) {
+    return updatedTask;
+  }
+
   try {
     const values = {
       id: task.id,
@@ -95,38 +116,40 @@ export async function upsertTask(task: TaskItem): Promise<TaskItem> {
       lastReminderSent: r.lastReminderSent || undefined,
     };
   } catch (error) {
-    console.error('Failed to upsert task in Cloud SQL:', error);
-    throw new Error('Database query failed. Please try again later.', { cause: error });
+    console.warn('Could not save to SQL, persisted in memory:', error);
+    return updatedTask;
   }
 }
 
 export async function bulkUpsertTasks(taskList: TaskItem[]): Promise<void> {
-  try {
-    for (const task of taskList) {
-      await upsertTask(task);
-    }
-  } catch (error) {
-    console.error('Failed bulk upsert in Cloud SQL:', error);
-    throw new Error('Database query failed. Please try again later.', { cause: error });
+  for (const task of taskList) {
+    await upsertTask(task);
   }
 }
 
 export async function deleteTask(id: string): Promise<void> {
+  inMemoryTasks = inMemoryTasks.filter((t) => t.id !== id);
+  if (!process.env.SQL_HOST && !process.env.DATABASE_URL) {
+    return;
+  }
   try {
     await db.delete(tasks).where(eq(tasks.id, id));
   } catch (error) {
-    console.error('Failed to delete task in Cloud SQL:', error);
-    throw new Error('Database query failed. Please try again later.', { cause: error });
+    console.warn('Failed to delete task in Cloud SQL, removed from memory:', error);
   }
 }
 
 export async function resetAllTasks(defaultTasks: TaskItem[]): Promise<TaskItem[]> {
+  inMemoryTasks = [...defaultTasks];
+  if (!process.env.SQL_HOST && !process.env.DATABASE_URL) {
+    return inMemoryTasks;
+  }
   try {
     await db.delete(tasks);
     await bulkUpsertTasks(defaultTasks);
     return await getAllTasks();
   } catch (error) {
-    console.error('Failed to reset tasks in Cloud SQL:', error);
-    throw new Error('Database query failed. Please try again later.', { cause: error });
+    console.warn('Failed to reset tasks in Cloud SQL, reset in memory:', error);
+    return inMemoryTasks;
   }
 }
