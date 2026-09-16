@@ -59,7 +59,7 @@ export const KPIBanner: React.FC<KPIBannerProps> = ({ tasks, asOfDate, onFilterC
         className="bg-slate-900/95 p-3 sm:p-4 border border-slate-800 border-l-4 border-l-[#95288E] rounded-r-lg hover:border-slate-700 transition-all cursor-pointer group shadow-md active:scale-[0.98]"
       >
         <div className="text-slate-300 text-[11px] sm:text-xs uppercase font-bold tracking-wider mb-1 flex items-center justify-between">
-          <span className="group-hover:text-[#D667CF] transition-colors truncate">Progress</span>
+          <span className="group-hover:text-[#D667CF] transition-colors truncate">OVERALL PROGRESS</span>
           <TrendingUp className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-[#D667CF] shrink-0" />
         </div>
         <div className="text-2xl sm:text-3xl lg:text-4xl font-mono text-white font-extrabold">{overallProgress}%</div>
@@ -70,7 +70,7 @@ export const KPIBanner: React.FC<KPIBannerProps> = ({ tasks, asOfDate, onFilterC
           />
         </div>
         <div className="text-[11px] sm:text-xs text-slate-300 mt-1.5 sm:mt-2 font-mono font-medium truncate">
-          <strong className="text-[#D667CF] text-xs sm:text-sm font-bold">{completed}</strong>/{total} done
+          <strong className="text-[#D667CF] text-xs sm:text-sm font-bold">{completed}</strong> / {total} done
         </div>
       </div>
 
@@ -80,14 +80,14 @@ export const KPIBanner: React.FC<KPIBannerProps> = ({ tasks, asOfDate, onFilterC
         className="bg-slate-900/95 p-3 sm:p-4 border border-slate-800 border-l-4 border-l-emerald-500 rounded-r-lg hover:border-slate-700 transition-all cursor-pointer group shadow-md active:scale-[0.98]"
       >
         <div className="text-slate-300 text-[11px] sm:text-xs uppercase font-bold tracking-wider mb-1 flex items-center justify-between">
-          <span className="group-hover:text-emerald-400 transition-colors truncate">Completed</span>
+          <span className="group-hover:text-emerald-400 transition-colors truncate">COMPLETED</span>
           <CheckCircle2 className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-emerald-400 shrink-0" />
         </div>
         <div className="text-2xl sm:text-3xl lg:text-4xl font-mono text-white font-extrabold">
           {completed} <span className="text-xs sm:text-sm text-slate-400 font-sans font-normal">/ {total}</span>
         </div>
         <div className="text-[11px] sm:text-xs text-emerald-400 mt-1.5 sm:mt-2.5 font-bold font-mono truncate">
-          {notStarted} next
+          {notStarted} scheduled next
         </div>
       </div>
 
@@ -97,14 +97,14 @@ export const KPIBanner: React.FC<KPIBannerProps> = ({ tasks, asOfDate, onFilterC
         className="bg-slate-900/95 p-3 sm:p-4 border border-slate-800 border-l-4 border-l-rose-500 rounded-r-lg hover:border-slate-700 transition-all cursor-pointer group shadow-md active:scale-[0.98]"
       >
         <div className="text-slate-300 text-[11px] sm:text-xs uppercase font-bold tracking-wider mb-1 flex items-center justify-between">
-          <span className="group-hover:text-rose-400 transition-colors truncate">Delays</span>
+          <span className="group-hover:text-rose-400 transition-colors truncate">CRITICAL DELAYS</span>
           <Flame className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-rose-400 shrink-0" />
         </div>
         <div className="text-2xl sm:text-3xl lg:text-4xl font-mono text-rose-400 font-extrabold">
           {delayedTasks.length < 10 ? `0${delayedTasks.length}` : delayedTasks.length}
         </div>
         <div className="text-[11px] sm:text-xs text-rose-300 mt-1.5 sm:mt-2.5 font-bold underline underline-offset-4 cursor-pointer font-mono truncate">
-          +{totalDelayDays}d slip
+          +{totalDelayDays}d slippage
         </div>
       </div>
 
@@ -114,14 +114,14 @@ export const KPIBanner: React.FC<KPIBannerProps> = ({ tasks, asOfDate, onFilterC
         className="bg-slate-900/95 p-3 sm:p-4 border border-slate-800 border-l-4 border-l-[#D667CF] rounded-r-lg hover:border-slate-700 transition-all cursor-pointer group shadow-md active:scale-[0.98]"
       >
         <div className="text-slate-300 text-[11px] sm:text-xs uppercase font-bold tracking-wider mb-1 flex items-center justify-between">
-          <span className="group-hover:text-[#D667CF] transition-colors truncate">Active Sprint</span>
+          <span className="group-hover:text-[#D667CF] transition-colors truncate">ACTIVE SPRINT</span>
           <Clock className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-[#D667CF] shrink-0" />
         </div>
         <div className="text-2xl sm:text-3xl lg:text-4xl font-mono text-white font-extrabold">
           {inProgress + partial}
         </div>
         <div className="text-[11px] sm:text-xs text-[#D667CF] mt-1.5 sm:mt-2.5 font-mono font-medium truncate">
-          {inProgress} act • {partial} part
+          {inProgress} active • {partial} partial
         </div>
       </div>
 
@@ -131,7 +131,7 @@ export const KPIBanner: React.FC<KPIBannerProps> = ({ tasks, asOfDate, onFilterC
         className="bg-slate-900/95 p-3 sm:p-4 border border-slate-800 border-l-4 border-l-[#B38D34] rounded-r-lg hover:border-slate-700 transition-all cursor-pointer group shadow-md active:scale-[0.98]"
       >
         <div className="text-slate-300 text-[11px] sm:text-xs uppercase font-bold tracking-wider mb-1 flex items-center justify-between">
-          <span className="group-hover:text-[#B38D34] transition-colors truncate">Due ≤ 72h</span>
+          <span className="group-hover:text-[#B38D34] transition-colors truncate">DUE IN ≤ 72H</span>
           <AlertTriangle className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-[#B38D34] shrink-0" />
         </div>
         <div className="text-2xl sm:text-3xl lg:text-4xl font-mono text-[#B38D34] font-extrabold">

@@ -88,23 +88,25 @@ export const Navbar: React.FC<NavbarProps> = ({
         {/* Mobile Header Row */}
         <div className="flex items-center justify-between w-full md:w-auto">
           {/* Brand & Title */}
-          <div className="flex items-center space-x-2.5 sm:space-x-3">
-            <div className="w-8 h-8 rounded-lg bg-[#95288E]/25 border border-[#95288E]/70 flex items-center justify-center text-[#D667CF] shadow-md shadow-[#95288E]/40 shrink-0">
-              <ShieldCheck className="w-5 h-5" />
+          <div className="flex items-start space-x-3">
+            <div className="w-10 h-10 rounded-xl bg-[#95288E]/25 border border-[#95288E]/70 flex items-center justify-center text-[#D667CF] shadow-lg shadow-[#95288E]/40 shrink-0 mt-0.5">
+              <ShieldCheck className="w-6 h-6" />
             </div>
             <div>
-              <h1 className="text-lg sm:text-2xl font-extrabold tracking-tight text-white flex items-center">
-                <span>WHOLESALE OPS</span>
-                <span className="text-[#D667CF] font-light ml-1.5 text-base sm:text-xl hidden xs:inline">Control Center</span>
+              <h1 className="text-xl sm:text-2xl font-black tracking-tight text-white leading-tight">
+                WHOLESALE BANKING<br /><span className="text-white">OPS</span>
               </h1>
-              <p className="text-slate-400 text-[10px] sm:text-xs uppercase tracking-wider flex items-center gap-1.5 font-mono">
-                <span className="text-[#B38D34] flex items-center gap-1 font-bold">
-                  <span className="w-1.5 h-1.5 rounded-full bg-[#B38D34] animate-pulse"></span>
-                  LIVE OPS
-                </span>
-                <span className="text-slate-600">•</span>
-                <span className="truncate text-slate-300">As-Of {asOfDate}</span>
+              <p className="text-[#D667CF] text-xs sm:text-sm font-medium mt-0.5">
+                Project Control Center
               </p>
+              <div className="flex flex-wrap items-center gap-2 mt-1 font-mono text-[10px] text-slate-400">
+                <span className="uppercase tracking-wider font-bold text-slate-300">EXECUTIVE ACCOUNTABILITY &amp; STATUS</span>
+                <span>•</span>
+                <span className="inline-flex items-center gap-1 px-1.5 py-0.2 rounded-full bg-emerald-950/90 border border-emerald-500/60 text-emerald-400 font-bold">
+                  <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse"></span>
+                  CURRENT DATE: {asOfDate} TODAY
+                </span>
+              </div>
             </div>
           </div>
 
@@ -208,6 +210,24 @@ export const Navbar: React.FC<NavbarProps> = ({
 
           {/* Quick AI, Add, Reminders & Actions */}
           <div className="flex items-center gap-2 pt-0 self-end">
+            <button
+              onClick={onOpenChangeLog}
+              className="px-3 py-1.5 bg-slate-900 hover:bg-slate-800 border border-slate-700 hover:border-[#D667CF]/70 rounded-lg text-xs font-bold text-slate-100 transition-all cursor-pointer flex items-center gap-1.5 shadow-sm"
+              title="View Last 10 Task Modifications Change Log"
+            >
+              <History className="w-3.5 h-3.5 text-[#D667CF]" />
+              <span>Change Log</span>
+            </button>
+
+            <button
+              onClick={onOpenReminders}
+              className="px-3 py-1.5 bg-slate-900 hover:bg-slate-800 border border-slate-700 hover:border-[#B38D34]/70 rounded-lg text-xs font-bold text-slate-100 transition-all cursor-pointer flex items-center gap-1.5 shadow-sm"
+              title="Daily Task Reminders"
+            >
+              <Bell className="w-3.5 h-3.5 text-[#B38D34]" />
+              <span>Daily Reminders</span>
+            </button>
+
             <button
               onClick={onOpenExecutiveSummary}
               className="px-3.5 py-1.5 bg-gradient-to-r from-[#95288E] via-[#a82da1] to-[#c039b7] hover:brightness-110 text-white rounded-lg text-xs font-black uppercase tracking-wider transition-all cursor-pointer flex items-center gap-1.5 shadow-lg shadow-[#95288E]/50 border border-[#D667CF]"

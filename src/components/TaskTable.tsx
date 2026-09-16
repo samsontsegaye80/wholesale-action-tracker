@@ -481,90 +481,159 @@ export const TaskTable: React.FC<TaskTableProps> = ({
     }
   };
 
+  const [tableViewMode, setTableViewMode] = useState<'table' | 'kanban'>('table');
+
+  const handleAlignOrderByPriority = () => {
+    setSortField('priority');
+    setSortAsc(false);
+  };
+
   return (
-    <div className="space-y-4">
+    <div className="space-y-3.5">
       
+      {/* Top View Mode Switcher & Align Toolbar */}
+      <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-2.5 p-3 bg-slate-900 border border-slate-800 rounded-xl shadow-lg">
+        <div className="flex items-center gap-1.5 bg-slate-950 p-1 rounded-lg border border-slate-800">
+          <button
+            onClick={() => {
+              setTableViewMode('table');
+              setMobileViewStyle('table');
+            }}
+            className={`px-3 py-1.5 rounded-md text-xs font-bold font-mono transition-all flex items-center gap-1.5 cursor-pointer ${
+              tableViewMode === 'table'
+                ? 'bg-[#95288E] text-white shadow-md shadow-[#95288E]/40 border border-[#D667CF]/50'
+                : 'text-slate-400 hover:text-slate-200'
+            }`}
+          >
+            <Layers className="w-3.5 h-3.5 text-[#D667CF]" />
+            <span>Table View</span>
+          </button>
+          <button
+            onClick={() => {
+              setTableViewMode('kanban');
+              setMobileViewStyle('cards');
+            }}
+            className={`px-3 py-1.5 rounded-md text-xs font-bold font-mono transition-all flex items-center gap-1.5 cursor-pointer ${
+              tableViewMode === 'kanban'
+                ? 'bg-[#95288E] text-white shadow-md shadow-[#95288E]/40 border border-[#D667CF]/50'
+                : 'text-slate-400 hover:text-slate-200'
+            }`}
+          >
+            <Square className="w-3.5 h-3.5 text-[#B38D34]" />
+            <span>Status Columns (Kanban)</span>
+          </button>
+        </div>
+
+        <div className="hidden lg:flex items-center text-xs font-mono text-slate-400 gap-1.5">
+          <Plus className="w-3 h-3 text-[#D667CF]" />
+          <span>Drag rows or cards to reorder priority &amp; change status</span>
+        </div>
+
+        <button
+          onClick={handleAlignOrderByPriority}
+          className="px-3.5 py-1.5 bg-gradient-to-r from-[#95288E] via-[#a82da1] to-[#c039b7] hover:brightness-110 text-white rounded-lg text-xs font-black uppercase tracking-wider transition-all cursor-pointer flex items-center justify-center gap-1.5 shadow-md shadow-[#95288E]/40 border border-[#D667CF]"
+          title="Align all tasks automatically by priority"
+        >
+          <Zap className="w-3.5 h-3.5 text-amber-300 fill-current" />
+          <span>Align Order by Priority</span>
+        </button>
+      </div>
+
       {/* Search & Filter Toolbar */}
       <div className="p-3 sm:p-4 bg-slate-900 border border-slate-800 rounded-xl shadow-lg space-y-3">
         
-        {/* Top Search & Mobile Toggles Row */}
-        <div className="flex flex-col sm:flex-row gap-2.5 items-stretch sm:items-center justify-between">
+        {/* Search & Filters Row */}
+        <div className="flex flex-wrap items-center gap-2.5">
           
           {/* Search Input */}
-          <div className="relative flex-1 min-w-[200px]">
+          <div className="relative flex-1 min-w-[220px]">
             <Search className="w-4 h-4 text-slate-400 absolute left-3 top-1/2 -translate-y-1/2" />
             <input
               type="text"
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
-              placeholder="Search deliverables, tasks, leads (Khalid, Dewa...)"
+              placeholder="Search deliverables, tasks, owners (Khalid, Dewa...)"
               className="w-full pl-9 pr-3 py-2 bg-slate-950 border border-slate-800 rounded-lg text-xs sm:text-sm text-slate-100 placeholder-slate-500 focus:outline-none focus:border-[#95288E] transition-colors"
             />
           </div>
 
-          {/* Mobile Buttons */}
-          <div className="flex items-center gap-1.5 justify-between sm:justify-end">
-            
-            {/* Mobile Filter Toggle */}
-            <button
-              onClick={() => setIsMobileFiltersOpen(!isMobileFiltersOpen)}
-              className={`md:hidden px-3 py-1.5 rounded-lg border text-xs font-semibold flex items-center gap-1.5 cursor-pointer ${
-                selectedWorkstream !== 'ALL' || selectedStatus !== 'ALL' || selectedPriority !== 'ALL' || selectedOwner !== 'ALL'
-                  ? 'bg-[#95288E]/20 border-[#D667CF] text-[#D667CF]'
-                  : 'bg-slate-950 border-slate-800 text-slate-300'
-              }`}
-            >
-              <span>Filters</span>
-              {(selectedWorkstream !== 'ALL' || selectedStatus !== 'ALL' || selectedPriority !== 'ALL' || selectedOwner !== 'ALL') ? (
-                <span className="w-2 h-2 rounded-full bg-[#D667CF]" />
-              ) : (
-                <ChevronDown className={`w-3.5 h-3.5 transition-transform ${isMobileFiltersOpen ? 'rotate-180' : ''}`} />
-              )}
-            </button>
+          {/* Workstream Filter */}
+          <select
+            value={selectedWorkstream}
+            onChange={(e) => setSelectedWorkstream(e.target.value)}
+            className="px-3 py-2 bg-slate-950 border border-slate-800 rounded-lg text-xs font-semibold text-slate-200 focus:outline-none focus:border-[#95288E] cursor-pointer"
+          >
+            <option value="ALL">All Workstreams ({workstreams.length})</option>
+            {workstreams.map(w => (
+              <option key={w} value={w}>{w}</option>
+            ))}
+          </select>
 
-            {/* Mobile Cards vs Table Toggle */}
-            <div className="md:hidden flex items-center bg-slate-950 border border-slate-800 rounded-lg p-0.5">
-              <button
-                onClick={() => setMobileViewStyle('cards')}
-                className={`px-2.5 py-1 rounded text-[11px] font-mono font-bold transition-colors ${
-                  mobileViewStyle === 'cards' ? 'bg-[#95288E] text-white shadow-sm' : 'text-slate-400 hover:text-white'
-                }`}
-              >
-                Cards
-              </button>
-              <button
-                onClick={() => setMobileViewStyle('table')}
-                className={`px-2.5 py-1 rounded text-[11px] font-mono font-bold transition-colors ${
-                  mobileViewStyle === 'table' ? 'bg-[#95288E] text-white shadow-sm' : 'text-slate-400 hover:text-white'
-                }`}
-              >
-                Table
-              </button>
-            </div>
+          {/* Status Filter */}
+          <select
+            value={selectedStatus}
+            onChange={(e) => setSelectedStatus(e.target.value)}
+            className="px-3 py-2 bg-slate-950 border border-slate-800 rounded-lg text-xs font-semibold text-slate-200 focus:outline-none focus:border-[#95288E] cursor-pointer"
+          >
+            <option value="ALL">All Statuses</option>
+            <option value="OVERDUE">🚨 Critical Overdue</option>
+            <option value="DUE_SOON">⚡ Due Next 72h</option>
+            <option value="DELAY_HORIZON">🔥 Delay &gt; 0d</option>
+            <option value="Completed">✓ Completed</option>
+            <option value="In Progress">⏳ In Progress</option>
+            <option value="Partial">⚠️ Partial</option>
+            <option value="Delayed">🛑 Delayed</option>
+            <option value="Blocked">🔒 Blocked</option>
+            <option value="No BRD">📋 No BRD</option>
+            <option value="Not Started">⚪ Not Started</option>
+          </select>
 
-            {/* Master Plan PDF / PPT Buttons */}
-            <div className="flex items-center gap-1">
-              <button
-                onClick={handleExportPdf}
-                disabled={isExportingPdf}
-                className="flex items-center space-x-1 px-2.5 py-1.5 bg-slate-950 hover:bg-slate-800 text-slate-200 border border-slate-800 rounded-lg text-xs font-semibold transition shadow-sm hover:border-[#95288E]/60 disabled:opacity-50"
-                title="Download Master Action Plan (44) as PDF Report"
-              >
-                <FileText className="w-3.5 h-3.5 text-rose-400" />
-                <span className="hidden sm:inline">{isExportingPdf ? 'Exporting...' : 'PDF'}</span>
-              </button>
-              <button
-                onClick={handleExportPpt}
-                disabled={isExportingPpt}
-                className="flex items-center space-x-1 px-2.5 py-1.5 bg-[#95288E]/20 hover:bg-[#95288E]/40 text-[#D667CF] border border-[#95288E]/50 rounded-lg text-xs font-semibold transition shadow-sm disabled:opacity-50"
-                title="Download Master Action Plan (44) 16:9 Presentation (.pptx)"
-              >
-                <Presentation className="w-3.5 h-3.5 text-[#D667CF]" />
-                <span className="hidden sm:inline">{isExportingPpt ? 'Exporting...' : 'PPT'}</span>
-              </button>
-            </div>
+          {/* Priority Filter */}
+          <select
+            value={selectedPriority}
+            onChange={(e) => setSelectedPriority(e.target.value)}
+            className="px-3 py-2 bg-slate-950 border border-slate-800 rounded-lg text-xs font-semibold text-slate-200 focus:outline-none focus:border-[#95288E] cursor-pointer"
+          >
+            <option value="ALL">All Priorities</option>
+            <option value="Critical">Critical</option>
+            <option value="High">High</option>
+            <option value="Medium">Medium</option>
+            <option value="Low">Low</option>
+          </select>
 
-          </div>
+          {/* Owner Filter */}
+          <select
+            value={selectedOwner}
+            onChange={(e) => setSelectedOwner(e.target.value)}
+            className="px-3 py-2 bg-slate-950 border border-slate-800 rounded-lg text-xs font-semibold text-slate-200 focus:outline-none focus:border-[#95288E] cursor-pointer"
+          >
+            <option value="ALL">All Leads / Owners</option>
+            {owners.map(o => (
+              <option key={o} value={o}>{o}</option>
+            ))}
+          </select>
+
+          {/* Plan PDF Button */}
+          <button
+            onClick={handleExportPdf}
+            disabled={isExportingPdf}
+            className="flex items-center space-x-1.5 px-3 py-2 bg-slate-950 hover:bg-slate-800 text-slate-200 border border-slate-800 rounded-lg text-xs font-bold transition shadow-sm hover:border-[#95288E]/60 disabled:opacity-50 cursor-pointer"
+            title="Download Master Action Plan (44) as PDF Report"
+          >
+            <FileText className="w-3.5 h-3.5 text-rose-400" />
+            <span>Plan PDF</span>
+          </button>
+
+          {/* Plan PPT Button */}
+          <button
+            onClick={handleExportPpt}
+            disabled={isExportingPpt}
+            className="flex items-center space-x-1.5 px-3 py-2 bg-[#95288E]/20 hover:bg-[#95288E]/40 text-[#D667CF] border border-[#95288E]/50 rounded-lg text-xs font-bold transition shadow-sm disabled:opacity-50 cursor-pointer"
+            title="Download Master Action Plan (44) 16:9 Presentation (.pptx)"
+          >
+            <Presentation className="w-3.5 h-3.5 text-[#D667CF]" />
+            <span>Plan PPT</span>
+          </button>
 
         </div>
 
