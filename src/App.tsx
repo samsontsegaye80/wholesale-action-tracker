@@ -19,7 +19,7 @@ import { UnlockEditModal } from './components/UnlockEditModal';
 import { ResetPasswordModal } from './components/ResetPasswordModal';
 import { SignInPage } from './components/SignInPage';
 import { TaskItem, ReminderNotification, ChangeLogEntry } from './types';
-import { loadTasksFromStorage, saveTasksToStorage, resetTasksToDefault } from './utils/storage';
+import { loadTasksFromStorage, saveTasksToStorage, resetTasksToDefault, loadAsOfDateFromStorage } from './utils/storage';
 import { AuthProvider, useAuth } from './context/AuthContext';
 import { 
   fetchTasksApi, 
