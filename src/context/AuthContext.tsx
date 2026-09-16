@@ -193,9 +193,12 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         user, 
         idToken: user?.isEditor ? 'editor-samson-token' : null, 
         loading, 
+        adminPassword,
         signInWithCredentials, 
         signInAsViewer, 
         signOut,
+        resetPasswordToDefault,
+        updateAdminPassword,
         isAuthenticated,
         canEdit
       }}

@@ -33,8 +33,8 @@ import {
 
 function MainApp() {
   const { user, idToken, canEdit, loading: authLoading } = useAuth();
-  const [tasks, setTasks] = useState<TaskItem[]>([]);
-  const [asOfDate, setAsOfDate] = useState<string>('18-08-2026');
+  const [tasks, setTasks] = useState<TaskItem[]>(() => loadTasksFromStorage());
+  const [asOfDate, setAsOfDate] = useState<string>(() => loadAsOfDateFromStorage());
   const [activeTab, setActiveTab] = useState<NavTabType>('tasks');
   const [filterStatusPreset, setFilterStatusPreset] = useState<string>('ALL');
 
