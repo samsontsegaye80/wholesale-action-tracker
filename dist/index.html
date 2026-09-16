@@ -1,6 +1,13 @@
 <!doctype html>
 <html lang="en">
   <head>
+    <script>
+      window.global = window;
+      window.process = window.process || { env: { NODE_ENV: 'production' } };
+      if (typeof window.FPClassifier === 'undefined') {
+        window.FPClassifier = class {};
+      }
+    </script>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" />
     <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -14,15 +21,11 @@
     <meta property="og:description" content="Enterprise action plan tracker with team deliverables, automated deadline reminders, D3 visual dependency graph with critical path method (CPM) analysis, delay impact analysis, Excel/PowerPoint daily exports, and Gemini-powered executive reviews." />
     <meta property="og:type" content="website" />
     <meta name="twitter:card" content="summary_large_image" />
-    <script type="module" crossorigin src="/assets/index-CLX47T8X.js"></script>
-    <link rel="stylesheet" crossorigin href="/assets/index-DHSLpKuU.css">
+    <script type="module" crossorigin src="/assets/index-T7AomHqj.js"></script>
+    <link rel="stylesheet" crossorigin href="/assets/index-BbdA8Bul.css">
   </head>
   <body>
     <div id="root"></div>
-    <script>
-      window.global = window;
-      window.process = window.process || { env: { NODE_ENV: 'production' } };
-    </script>
   </body>
 </html>
 

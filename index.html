@@ -1,6 +1,13 @@
 <!doctype html>
 <html lang="en">
   <head>
+    <script>
+      window.global = window;
+      window.process = window.process || { env: { NODE_ENV: 'production' } };
+      if (typeof window.FPClassifier === 'undefined') {
+        window.FPClassifier = class {};
+      }
+    </script>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" />
     <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -17,10 +24,6 @@
   </head>
   <body>
     <div id="root"></div>
-    <script>
-      window.global = window;
-      window.process = window.process || { env: { NODE_ENV: 'production' } };
-    </script>
     <script type="module" src="/src/main.tsx"></script>
   </body>
 </html>
