@@ -144,106 +144,95 @@ export const Navbar: React.FC<NavbarProps> = ({
         {/* Desktop Controls (Hidden on Mobile) */}
         <div className="hidden md:flex flex-wrap items-center gap-3">
           
-          {/* As-Of Baseline Date Simulator */}
+          {/* Current Date Simulator */}
           <div className="flex flex-col items-start sm:items-end">
-            <span className="text-[10px] uppercase text-slate-400 font-bold tracking-wider font-mono">Baseline Date</span>
-            <div className="flex items-center gap-1.5 mt-0.5 bg-slate-950 border border-slate-800 hover:border-[#B38D34]/70 transition-colors rounded-md px-2.5 py-1 shadow-sm">
-              <Clock className="w-3.5 h-3.5 text-[#B38D34]" />
+            <div className="flex items-center gap-1.5">
+              <span className="text-[10px] uppercase text-slate-400 font-bold tracking-wider font-mono">CURRENT DATE</span>
+              <span className="inline-flex items-center gap-1 px-1.5 py-0.2 rounded-full bg-emerald-950/90 border border-emerald-500/60 text-emerald-400 text-[9px] font-bold font-mono">
+                <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse"></span>
+                TODAY
+              </span>
+            </div>
+            <div className="flex items-center gap-1.5 mt-0.5 bg-slate-950 border border-emerald-500/60 rounded-md px-2.5 py-1 shadow-sm">
+              <Calendar className="w-3.5 h-3.5 text-emerald-400" />
               <input
                 type="text"
                 value={asOfDate}
                 onChange={(e) => onAsOfDateChange(e.target.value)}
-                placeholder="18-08-2026"
-                className="w-20 bg-transparent text-xs text-[#B38D34] font-mono font-bold focus:outline-none"
-                title="Change project baseline reference date (DD-MM-YYYY)"
+                placeholder="17-09-2026"
+                className="w-24 bg-transparent text-xs text-emerald-300 font-mono font-bold focus:outline-none"
+                title="Change project current reference date (DD-MM-YYYY)"
               />
             </div>
+            <span className="text-[9px] text-slate-400 font-mono mt-0.5">Thu, Sep 17, 2026</span>
           </div>
 
           {/* Export Buttons: PDF, XLSX, PPTX, ICS */}
           <div className="flex flex-col items-start sm:items-end">
-            <span className="text-[10px] uppercase text-slate-400 font-bold tracking-wider font-mono">System Export</span>
+            <span className="text-[10px] uppercase text-slate-400 font-bold tracking-wider font-mono">SYSTEM EXPORT</span>
             <div className="flex items-center gap-1 mt-0.5">
               <button 
                 onClick={onOpenDailyExport}
-                className="px-2 py-1 bg-slate-800 border border-slate-700 hover:border-[#D667CF]/80 rounded text-[11px] font-mono font-bold text-slate-100 hover:bg-slate-750 transition-all cursor-pointer flex items-center gap-1 shadow-sm"
+                className="px-2.5 py-1 bg-slate-900 border border-slate-700 hover:border-[#D667CF]/80 rounded text-[11px] font-mono font-bold text-slate-100 hover:bg-slate-800 transition-all cursor-pointer flex items-center gap-1 shadow-sm"
                 title="Export executive PDF boardroom report"
               >
                 <FileText className="w-3 h-3 text-[#D667CF]" />
-                <span>PDF</span>
+                <span>.PDF</span>
               </button>
               <button 
                 onClick={onOpenDailyExport}
-                className="px-2 py-1 bg-slate-800 border border-slate-700 hover:border-emerald-500/70 rounded text-[11px] font-mono font-bold text-slate-100 hover:bg-slate-750 transition-all cursor-pointer flex items-center gap-1 shadow-sm"
+                className="px-2.5 py-1 bg-slate-900 border border-slate-700 hover:border-emerald-500/70 rounded text-[11px] font-mono font-bold text-slate-100 hover:bg-slate-800 transition-all cursor-pointer flex items-center gap-1 shadow-sm"
                 title="Export multi-sheet Excel workbook"
               >
                 <FileSpreadsheet className="w-3 h-3 text-emerald-400" />
-                <span>XLSX</span>
+                <span>.XLSX</span>
               </button>
               <button 
                 onClick={onOpenDailyExport}
-                className="px-2 py-1 bg-slate-800 border border-slate-700 hover:border-[#B38D34]/70 rounded text-[11px] font-mono font-bold text-slate-100 hover:bg-slate-750 transition-all cursor-pointer flex items-center gap-1 shadow-sm"
+                className="px-2.5 py-1 bg-slate-900 border border-slate-700 hover:border-[#B38D34]/70 rounded text-[11px] font-mono font-bold text-slate-100 hover:bg-slate-800 transition-all cursor-pointer flex items-center gap-1 shadow-sm"
                 title="Export executive PowerPoint presentation"
               >
                 <Presentation className="w-3 h-3 text-[#B38D34]" />
-                <span>PPTX</span>
+                <span>.PPTX</span>
               </button>
               <button 
                 onClick={onOpenDailyExport}
-                className="px-2 py-1 bg-slate-800 border border-slate-700 hover:border-cyan-500/70 rounded text-[11px] font-mono font-bold text-slate-100 hover:bg-slate-750 transition-all cursor-pointer flex items-center gap-1 shadow-sm"
+                className="px-2.5 py-1 bg-slate-900 border border-slate-700 hover:border-cyan-500/70 rounded text-[11px] font-mono font-bold text-slate-100 hover:bg-slate-800 transition-all cursor-pointer flex items-center gap-1 shadow-sm"
                 title="Sync deadlines with Outlook & Google Calendar (.ics)"
               >
                 <Calendar className="w-3 h-3 text-cyan-400" />
-                <span>ICS</span>
+                <span>.ICS</span>
               </button>
             </div>
           </div>
 
-          {/* Quick AI, Reminders & Change Log Actions */}
-          <div className="flex items-center gap-1.5 pt-0 self-end">
-            <button
-              onClick={onOpenChangeLog}
-              className="px-2.5 py-1.5 bg-slate-800 border border-slate-700 hover:border-[#95288E]/70 rounded-md text-xs font-bold text-slate-100 hover:bg-slate-750 transition-all cursor-pointer flex items-center gap-1 shadow-sm"
-              title="View Last 10 Task Modifications Change Log"
-            >
-              <History className="w-3.5 h-3.5 text-[#D667CF]" />
-              <span>Log</span>
-            </button>
-
-            <button
-              onClick={onOpenReminders}
-              className="px-2.5 py-1.5 bg-slate-800 border border-slate-700 hover:border-[#B38D34]/70 rounded-md text-xs font-bold text-slate-100 hover:bg-slate-750 transition-all cursor-pointer flex items-center gap-1 shadow-sm"
-              title="Daily Task Reminders"
-            >
-              <Bell className="w-3.5 h-3.5 text-[#B38D34]" />
-              <span>Reminders</span>
-            </button>
-
+          {/* Quick AI, Add, Reminders & Actions */}
+          <div className="flex items-center gap-2 pt-0 self-end">
             <button
               onClick={onOpenExecutiveSummary}
-              className="px-3 py-1.5 bg-gradient-to-r from-[#95288E] to-[#7e1f77] hover:from-[#aa2ea3] hover:to-[#95288E] text-white rounded-md text-xs font-extrabold uppercase tracking-wider transition-all cursor-pointer flex items-center gap-1.5 shadow-lg shadow-[#95288E]/40 border border-[#D667CF]/50"
+              className="px-3.5 py-1.5 bg-gradient-to-r from-[#95288E] via-[#a82da1] to-[#c039b7] hover:brightness-110 text-white rounded-lg text-xs font-black uppercase tracking-wider transition-all cursor-pointer flex items-center gap-1.5 shadow-lg shadow-[#95288E]/50 border border-[#D667CF]"
               title="Generate Executive SteerCo AI Review & Risk Radar"
             >
-              <Sparkles className="w-3.5 h-3.5 text-[#B38D34]" />
-              <span>SteerCo AI</span>
+              <Sparkles className="w-3.5 h-3.5 text-amber-300" />
+              <span>STEERCO AI</span>
             </button>
 
             <button
               onClick={handleAddNewTaskClick}
-              className={`px-3 py-1.5 border rounded-md text-xs font-bold transition-all cursor-pointer flex items-center gap-1.5 shadow-sm ${
+              className={`px-3 py-1.5 border rounded-lg text-xs font-bold transition-all cursor-pointer flex items-center gap-1.5 shadow-sm ${
                 canEdit 
                   ? 'bg-slate-800 border-slate-700 hover:border-[#D667CF]/60 text-slate-100 hover:bg-slate-750'
                   : 'bg-slate-850 border-slate-800 text-slate-400'
               }`}
               title={canEdit ? "Add New Action Item" : "Requires Samson credentials to add tasks"}
             >
-              {canEdit ? <Plus className="w-3.5 h-3.5 text-[#D667CF]" /> : <Lock className="w-3 h-3 text-amber-400" />}
-              <span>Add</span>
+              <Plus className="w-3.5 h-3.5 text-[#D667CF]" />
+              <span>Add Task</span>
             </button>
 
             <button
               onClick={handleResetDataClick}
-              className="p-1.5 bg-slate-800 border border-slate-700 rounded-md text-slate-300 hover:text-[#D667CF] hover:bg-slate-700 transition-colors cursor-pointer"
+              className="p-2 bg-slate-800 border border-slate-700 rounded-lg text-slate-300 hover:text-[#D667CF] hover:bg-slate-700 transition-colors cursor-pointer"
               title={canEdit ? "Reset to 44 Baseline Deliverables" : "Requires Samson credentials"}
             >
               <RotateCcw className="w-3.5 h-3.5" />
@@ -253,30 +242,32 @@ export const Navbar: React.FC<NavbarProps> = ({
               <button
                 onClick={onSyncRemote}
                 disabled={isSyncingRemote}
-                className="p-1.5 bg-slate-800 border border-slate-700 hover:border-cyan-500/70 rounded-md text-xs font-mono font-bold text-slate-100 hover:bg-slate-750 transition-all cursor-pointer flex items-center gap-1 shadow-sm disabled:opacity-50"
+                className="px-2.5 py-1.5 bg-slate-800 border border-slate-700 hover:border-cyan-500/70 rounded-lg text-xs font-bold text-slate-100 hover:bg-slate-750 transition-all cursor-pointer flex items-center gap-1.5 shadow-sm disabled:opacity-50"
                 title="Sync live deliverables & reminders from remote server"
               >
                 <RefreshCw className={`w-3.5 h-3.5 text-cyan-400 ${isSyncingRemote ? 'animate-spin' : ''}`} />
+                <span>Sync</span>
               </button>
             )}
 
             {/* Authentication / Samson Editor Permissions Badge */}
             {!authLoading && (
               canEdit ? (
-                <div className="flex items-center gap-1.5 bg-[#95288E]/20 border border-[#95288E]/60 rounded-md px-2 py-1 text-xs">
+                <div className="flex items-center gap-2 bg-[#95288E]/25 border border-[#95288E]/70 rounded-lg px-2.5 py-1 text-xs">
                   <div className="w-5 h-5 rounded-full bg-[#95288E] text-white flex items-center justify-center font-bold text-[10px] shadow-sm">
                     S
                   </div>
                   <div className="text-left font-mono leading-none">
-                    <span className="text-white font-bold block text-[10px]">Samson</span>
+                    <span className="text-white font-bold block text-[11px]">Samson</span>
+                    <span className="text-[#D667CF] text-[9px] block">Editor</span>
                   </div>
                   {onOpenResetPassword && (
                     <button
                       onClick={onOpenResetPassword}
-                      className="text-slate-400 hover:text-[#B38D34] transition-colors p-0.5 cursor-pointer"
+                      className="text-slate-400 hover:text-[#B38D34] transition-colors p-0.5 cursor-pointer ml-1"
                       title="Reset or Change Admin Password"
                     >
-                      <KeyRound className="w-3 h-3" />
+                      <KeyRound className="w-3.5 h-3.5" />
                     </button>
                   )}
                   <button
@@ -284,16 +275,16 @@ export const Navbar: React.FC<NavbarProps> = ({
                     className="text-slate-400 hover:text-rose-400 transition-colors p-0.5 cursor-pointer"
                     title="Sign Out"
                   >
-                    <LogOut className="w-3 h-3" />
+                    <LogOut className="w-3.5 h-3.5" />
                   </button>
                 </div>
               ) : (
                 <button
                   onClick={onUnlockEdit}
-                  className="flex items-center gap-1 bg-amber-950/40 hover:bg-amber-900/60 border border-amber-800/80 rounded-md px-2 py-1 text-xs text-amber-300 transition-colors cursor-pointer shadow-sm font-mono font-bold text-[11px]"
+                  className="flex items-center gap-1.5 bg-amber-950/40 hover:bg-amber-900/60 border border-amber-800/80 rounded-lg px-2.5 py-1.5 text-xs text-amber-300 transition-colors cursor-pointer shadow-sm font-mono font-bold text-[11px]"
                   title="Unlock Edit Rights"
                 >
-                  <KeyRound className="w-3 h-3 text-amber-400" />
+                  <KeyRound className="w-3.5 h-3.5 text-amber-400" />
                   <span>Unlock</span>
                 </button>
               )

@@ -145,17 +145,17 @@ export const KPIBanner: React.FC<KPIBannerProps> = ({ tasks, asOfDate, onFilterC
       {/* 6. Blocked / Missing Specs - Brand Plum */}
       <div 
         onClick={() => onFilterClick && onFilterClick('No BRD')}
-        className="bg-slate-900/95 p-3 sm:p-4 border border-slate-800 border-l-4 border-l-[#95288E] rounded-r-lg hover:border-slate-700 transition-all cursor-pointer group shadow-md active:scale-[0.98]"
+        className="bg-slate-900/95 p-3 sm:p-4 border border-slate-800 border-l-4 border-l-[#D667CF] rounded-r-lg hover:border-slate-700 transition-all cursor-pointer group shadow-md active:scale-[0.98]"
       >
         <div className="text-slate-300 text-[11px] sm:text-xs uppercase font-bold tracking-wider mb-1 flex items-center justify-between">
-          <span className="group-hover:text-[#D667CF] transition-colors truncate">No BRD</span>
+          <span className="group-hover:text-[#D667CF] transition-colors truncate">MISSING SPECS</span>
           <FileQuestion className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-[#D667CF] shrink-0" />
         </div>
         <div className="text-2xl sm:text-3xl lg:text-4xl font-mono text-[#D667CF] font-extrabold">
           {noBrd < 10 ? `0${noBrd}` : noBrd}
         </div>
         <div className="text-[11px] sm:text-xs text-[#D667CF] mt-1.5 sm:mt-2.5 font-mono font-semibold truncate">
-          #12, #44
+          Task #12, #44
         </div>
       </div>
 
